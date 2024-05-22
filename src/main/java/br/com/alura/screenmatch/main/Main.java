@@ -1,11 +1,14 @@
 package br.com.alura.screenmatch.main;
 
+import br.com.alura.screenmatch.model.Episode;
+import br.com.alura.screenmatch.model.EpisodeData;
 import br.com.alura.screenmatch.model.SeasonData;
 import br.com.alura.screenmatch.model.SeriesData;
 import br.com.alura.screenmatch.service.ConvertData;
 import br.com.alura.screenmatch.service.FetchApi;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,5 +37,11 @@ public class Main {
       seasonList.add(seasonData);
     }
     seasonList.forEach(season -> season.episodes().forEach(episode -> System.out.println(episode.title())));
+
+    List<EpisodeData> episodeDataList = seasonList.stream().flatMap(season -> season.episodes().stream()).toList();
+    episodeDataList.stream().filter(episode -> !episode.score().equalsIgnoreCase("n/a")).sorted(Comparator.comparing(EpisodeData::score).reversed()).limit(5).forEach(System.out::println);
+
+    List<Episode> episodes = seasonList.stream().flatMap(season -> season.episodes().stream().map(episode -> new Episode(season.seasonNumber(), episode))).toList();
+    episodes.forEach(System.out::println);
   }
 }
