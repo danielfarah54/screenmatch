@@ -41,10 +41,16 @@ public class Main {
     seasonList.forEach(season -> season.episodes().forEach(episode -> System.out.println(episode.title())));
 
     List<EpisodeData> episodeDataList = seasonList.stream().flatMap(season -> season.episodes().stream()).toList();
-    episodeDataList.stream().filter(episode -> !episode.score().equalsIgnoreCase("n/a")).sorted(Comparator.comparing(EpisodeData::score).reversed()).limit(5).forEach(System.out::println);
-
-    List<Episode> episodes = seasonList.stream().flatMap(season -> season.episodes().stream().map(episode -> new Episode(season.seasonNumber(), episode))).toList();
-    episodes.forEach(System.out::println);
+    episodeDataList.stream()
+      .filter(episode -> !episode.score().equalsIgnoreCase("n/a"))
+      .peek(episodeData -> System.out.println("First step\n" + episodeData))
+      .sorted(Comparator.comparing(EpisodeData::score).reversed())
+      .peek(episodeData -> System.out.println("Second step\n" + episodeData))
+      .limit(10)
+      .peek(episodeData -> System.out.println("Third step\n" + episodeData))
+      .map(episode -> episode.title().toUpperCase())
+      .peek(episodeData -> System.out.println("Fourth step\n" + episodeData))
+      .forEach(System.out::println);
 
     System.out.println("From what year do you want to watch the episodes?");
     var year = scanner.nextInt();
