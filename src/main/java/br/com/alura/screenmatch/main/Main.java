@@ -6,10 +6,7 @@ import br.com.alura.screenmatch.model.SeriesData;
 import br.com.alura.screenmatch.service.ConvertData;
 import br.com.alura.screenmatch.service.FetchApi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -91,5 +88,14 @@ public class Main {
         Collectors.averagingDouble(Episode::getScore)));
 //    seasonRating.forEach((season, rating) -> System.out.println("Season: " + season + " - Rating: " + rating));
     System.out.println(seasonRating);
+
+    DoubleSummaryStatistics statistics = episodes.stream()
+      .filter(episode -> episode.getScore() > 0.0)
+      .collect(Collectors.summarizingDouble(Episode::getScore));
+
+    System.out.println("Average: " + statistics.getAverage());
+    System.out.println("Total: " + statistics.getCount());
+    System.out.println("Max: " + statistics.getMax());
+    System.out.println("Min: " + statistics.getMin());
   }
 }
