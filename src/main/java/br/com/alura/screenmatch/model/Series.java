@@ -1,17 +1,39 @@
 package br.com.alura.screenmatch.model;
 
 import br.com.alura.screenmatch.service.FetchChatGPT;
+import jakarta.persistence.*;
 
 import java.util.OptionalDouble;
 
+@Entity
+@Table(name = "SERIES")
 public class Series {
-  private final String title;
-  private final Integer totalSeasons;
-  private final Double score;
-  private final Category genre;
-  private final String actors;
-  private final String poster;
-  private final String plot;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "SERI_SQ_ID")
+  private Long id;
+
+  @Column(name = "SERI_TX_TITLE")
+  private String title;
+
+  @Column(name = "SERI_NR_TOTAL_SEASONS")
+  private Integer totalSeasons;
+
+  @Column(name = "SERI_NR_SCORE")
+  private Double score;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "SERI_TX_GENRE")
+  private Category genre;
+
+  @Column(name = "SERI_TX_ACTORS")
+  private String actors;
+
+  @Column(name = "SERI_TX_POSTER")
+  private String poster;
+
+  @Column(name = "SERI_TX_PLOT")
+  private String plot;
 
   public Series (SeriesData seriesData) {
     this.title = seriesData.title();
@@ -23,32 +45,70 @@ public class Series {
     this.plot = FetchChatGPT.getTranslation(seriesData.plot()).trim();
   }
 
+  public Series() {}
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public String getTitle() {
     return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Integer getTotalSeasons() {
     return totalSeasons;
   }
 
+  public void setTotalSeasons(Integer totalSeasons) {
+    this.totalSeasons = totalSeasons;
+  }
+
   public Double getScore() {
     return score;
+  }
+
+  public void setScore(Double score) {
+    this.score = score;
   }
 
   public Category getGenre() {
     return genre;
   }
 
+  public void setGenre(Category genre) {
+    this.genre = genre;
+  }
+
   public String getActors() {
     return actors;
+  }
+
+  public void setActors(String actors) {
+    this.actors = actors;
   }
 
   public String getPoster() {
     return poster;
   }
 
+  public void setPoster(String poster) {
+    this.poster = poster;
+  }
+
   public String getPlot() {
     return plot;
+  }
+
+  public void setPlot(String plot) {
+    this.plot = plot;
   }
 
   @Override
