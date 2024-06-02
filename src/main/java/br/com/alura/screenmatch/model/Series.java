@@ -13,7 +13,7 @@ public class Series {
   @Column(name = "SERI_SQ_ID")
   private Long id;
 
-  @Column(name = "SERI_TX_TITLE")
+  @Column(name = "SERI_TX_TITLE", unique = true)
   private String title;
 
   @Column(name = "SERI_NR_TOTAL_SEASONS")
@@ -35,6 +35,8 @@ public class Series {
   @Column(name = "SERI_TX_PLOT")
   private String plot;
 
+  public Series() {}
+
   public Series (SeriesData seriesData) {
     this.title = seriesData.title();
     this.totalSeasons = seriesData.totalSeasons();
@@ -45,7 +47,6 @@ public class Series {
     this.plot = FetchChatGPT.getTranslation(seriesData.plot()).trim();
   }
 
-  public Series() {}
 
   public Long getId() {
     return id;
