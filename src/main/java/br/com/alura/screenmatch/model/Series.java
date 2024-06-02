@@ -3,6 +3,8 @@ package br.com.alura.screenmatch.model;
 import br.com.alura.screenmatch.service.FetchChatGPT;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
@@ -34,6 +36,9 @@ public class Series {
 
   @Column(name = "SERI_TX_PLOT")
   private String plot;
+
+  @OneToMany(mappedBy = "series")
+  private List<Episode> episodes = new ArrayList<>();
 
   public Series() {}
 
@@ -110,6 +115,14 @@ public class Series {
 
   public void setPlot(String plot) {
     this.plot = plot;
+  }
+
+  public List<Episode> getEpisodes() {
+    return episodes;
+  }
+
+  public void setEpisodes(List<Episode> episodes) {
+    this.episodes = episodes;
   }
 
   @Override
