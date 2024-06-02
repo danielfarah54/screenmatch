@@ -1,9 +1,12 @@
 package br.com.alura.screenmatch.service;
 
 public class FetchChatGPT {
+
   public static String getTranslation(String text) {
     return text;
-//    OpenAiService service = new OpenAiService("your-api-key-here");
+//    Dotenv dotenv = Dotenv.load();
+//    String apiKey = dotenv.get("OPENAI_API_KEY");
+//    OpenAiService service = new OpenAiService(apiKey);
 //
 //    CompletionRequest completionRequest = CompletionRequest.builder()
 //      .model("gpt-3.5-turbo-instruct")
