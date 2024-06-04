@@ -37,7 +37,7 @@ public class Series {
   @Column(name = "SERI_TX_PLOT")
   private String plot;
 
-  @OneToMany(mappedBy = "series")
+  @OneToMany(mappedBy = "series", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Episode> episodes = new ArrayList<>();
 
   public Series() {}
@@ -122,6 +122,7 @@ public class Series {
   }
 
   public void setEpisodes(List<Episode> episodes) {
+    episodes.forEach(episode -> episode.setSeries(this));
     this.episodes = episodes;
   }
 
@@ -134,6 +135,7 @@ public class Series {
       + ", score=" + score
       + ", actors='" + actors + '\''
       + ", poster='" + poster + '\''
-      + ", plot='" + plot + '\'';
+      + ", plot='" + plot + '\''
+      + ", episodes=" + episodes;
   }
 }
