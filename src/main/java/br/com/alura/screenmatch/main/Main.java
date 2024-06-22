@@ -30,6 +30,7 @@ public class Main {
                 5 - Search series by actor
                 6 - Top 5 series
                 7 - Search series by genre
+                8 - Search series by number of seasons and score
                 
                 0 - Exit
                 """;
@@ -57,6 +58,9 @@ public class Main {
           break;
         case "7":
           searchSeriesByGenre();
+          break;
+        case "8":
+          searchSeriesByNumberOfSeasonsAndScore();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -162,6 +166,20 @@ public class Main {
     var genre = scanner.nextLine();
 
     List<Series> foundSeries = seriesRepository.findByGenre(Category.ofPortuguese(genre.trim()));
+    foundSeries
+      .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
+  }
+
+  private void searchSeriesByNumberOfSeasonsAndScore() {
+    System.out.println("Enter maximum number of seasons");
+    var seasons = scanner.nextInt();
+    scanner.nextLine();
+
+    System.out.println("Enter minimum score (from 0.1 to 10.0)");
+    var score = scanner.nextDouble();
+    scanner.nextLine();
+
+    List<Series> foundSeries = seriesRepository.findByTotalSeasonsLessThanEqualAndScoreGreaterThanEqual(seasons, score);
     foundSeries
       .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
   }
