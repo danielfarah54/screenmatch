@@ -18,8 +18,6 @@ public class Main {
   private final String API_KEY = "&apikey=96a9c788";
   private final SeriesRepository seriesRepository;
 
-  private List<Series> seriesList = new ArrayList<>();
-
   public Main(SeriesRepository seriesRepository) {
     this.seriesRepository = seriesRepository;
   }
@@ -33,6 +31,7 @@ public class Main {
                 3 - Show searched series
                 4 - Search series by title
                 5 - Search series by actor
+                6 - Top 5 series
                 
                 0 - Exit
                 """;
@@ -54,6 +53,9 @@ public class Main {
           break;
         case "5":
           searchSeriesByActor();
+          break;
+        case "6":
+          showTop5Series();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -114,7 +116,7 @@ public class Main {
   }
 
   private void showSearchedSeries() {
-    seriesList = seriesRepository.findAll();
+    List<Series> seriesList = seriesRepository.findAll();
 
     seriesList
       .stream()
@@ -145,6 +147,12 @@ public class Main {
     foundSeries
       .stream()
       .sorted(Comparator.comparing(Series::getScore).reversed())
+      .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
+  }
+
+  private void showTop5Series() {
+    List<Series> topSeries = seriesRepository.findTop5ByOrderByScoreDesc();
+    topSeries
       .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
   }
 }
