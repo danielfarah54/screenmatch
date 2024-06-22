@@ -32,6 +32,7 @@ public class Main {
                 2 - Search for episodes
                 3 - Show searched series
                 4 - Search series by title
+                5 - Search series by actor
                 
                 0 - Exit
                 """;
@@ -50,6 +51,9 @@ public class Main {
           break;
         case "4":
           searchSeriesByTitle();
+          break;
+        case "5":
+          searchSeriesByActor();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -127,5 +131,20 @@ public class Main {
     } else {
       System.out.println("Series not found");
     }
+  }
+
+  private void searchSeriesByActor() {
+    System.out.println("Enter actor name");
+    var name = scanner.nextLine();
+    System.out.println("Enter score (from 0.1 to 10.0)");
+    var score = scanner.nextDouble();
+    scanner.nextLine();
+    List<Series> foundSeries = seriesRepository.findByActorsContainingIgnoreCaseAndScoreGreaterThanEqual(name, score);
+
+    System.out.println("Series that " + name + " played in: ");
+    foundSeries
+      .stream()
+      .sorted(Comparator.comparing(Series::getScore).reversed())
+      .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
   }
 }
