@@ -35,6 +35,7 @@ public class Main {
                 8 - Search series by number of seasons and score
                 9 - Search episodes by excerpt
                 10 - Top 5 episodes by series
+                11 - Search episodes after date
                 
                 0 - Exit
                 """;
@@ -71,6 +72,9 @@ public class Main {
           break;
         case "10":
           showTop5EpisodesBySeries();
+          break;
+        case "11":
+          searchEpisodesAfterDate();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -223,6 +227,28 @@ public class Main {
           episode.getEpisodeNumber(),
           episode.getTitle(),
           episode.getScore()
+        ));
+    }
+  }
+
+  private void searchEpisodesAfterDate() {
+    searchSeriesByTitle();
+    if (searchedSeries.isPresent()) {
+      Series series = searchedSeries.get();
+
+      System.out.println("Enter limit year");
+      var year = scanner.nextInt();
+      scanner.nextLine();
+
+      List<Episode> episodes = seriesRepository.findByEpisodesAfterDate(series, year);
+      episodes
+        .forEach(episode -> System.out.printf(
+          "%s: %dx%d - %s - %s\n",
+          episode.getSeries().getTitle(),
+          episode.getSeason(),
+          episode.getEpisodeNumber(),
+          episode.getTitle(),
+          episode.getReleaseDate()
         ));
     }
   }
