@@ -179,7 +179,7 @@ public class Main {
     var score = scanner.nextDouble();
     scanner.nextLine();
 
-    List<Series> foundSeries = seriesRepository.findByTotalSeasonsLessThanEqualAndScoreGreaterThanEqual(seasons, score);
+    List<Series> foundSeries = seriesRepository.findByTotalSeasonsAndScore(seasons, score);
     foundSeries
       .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
   }
