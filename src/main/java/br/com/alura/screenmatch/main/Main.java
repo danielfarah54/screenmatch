@@ -15,6 +15,8 @@ public class Main {
   private final String API_KEY = "&apikey=96a9c788";
   private final SeriesRepository seriesRepository;
 
+  Optional<Series> searchedSeries = Optional.empty();
+
   public Main(SeriesRepository seriesRepository) {
     this.seriesRepository = seriesRepository;
   }
@@ -32,6 +34,7 @@ public class Main {
                 7 - Search series by genre
                 8 - Search series by number of seasons and score
                 9 - Search episodes by excerpt
+                10 - Top 5 episodes by series
                 
                 0 - Exit
                 """;
@@ -65,6 +68,9 @@ public class Main {
           break;
         case "9":
           searchEpisodesByExcerpt();
+          break;
+        case "10":
+          showTop5EpisodesBySeries();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -136,9 +142,9 @@ public class Main {
   private void searchSeriesByTitle() {
     System.out.println("Enter series name");
     var name = scanner.nextLine();
-    Optional<Series> series = seriesRepository.findByTitleContainingIgnoreCase(name);
-    if (series.isPresent()) {
-      System.out.println(series.get());
+    searchedSeries = seriesRepository.findByTitleContainingIgnoreCase(name);
+    if (searchedSeries.isPresent()) {
+      System.out.println(searchedSeries.get());
     } else {
       System.out.println("Series not found");
     }
@@ -201,5 +207,23 @@ public class Main {
         episode.getEpisodeNumber(),
         episode.getTitle()
       ));
+  }
+
+  private void showTop5EpisodesBySeries() {
+    searchSeriesByTitle();
+
+    if (searchedSeries.isPresent()) {
+      Series series = searchedSeries.get();
+      List<Episode> topEpisodes = seriesRepository.findTop5EpisodesBySeries(series);
+      topEpisodes
+        .forEach(episode -> System.out.printf(
+          "%s: %dx%d - %s - %.1f\n",
+          episode.getSeries().getTitle(),
+          episode.getSeason(),
+          episode.getEpisodeNumber(),
+          episode.getTitle(),
+          episode.getScore()
+        ));
+    }
   }
 }
