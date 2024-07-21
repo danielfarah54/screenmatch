@@ -31,6 +31,7 @@ public class Main {
                 6 - Top 5 series
                 7 - Search series by genre
                 8 - Search series by number of seasons and score
+                9 - Search episodes by excerpt
                 
                 0 - Exit
                 """;
@@ -61,6 +62,9 @@ public class Main {
           break;
         case "8":
           searchSeriesByNumberOfSeasonsAndScore();
+          break;
+        case "9":
+          searchEpisodesByExcerpt();
           break;
         case "0":
           System.out.println("Exiting...");
@@ -182,5 +186,20 @@ public class Main {
     List<Series> foundSeries = seriesRepository.findByTotalSeasonsAndScore(seasons, score);
     foundSeries
       .forEach(series -> System.out.println(series.getTitle() + " - " + series.getScore()));
+  }
+
+  private void searchEpisodesByExcerpt() {
+    System.out.println("Enter excerpt");
+    var excerpt = scanner.nextLine();
+
+    List<Episode> foundEpisodes = seriesRepository.findByExcerpt(excerpt);
+    foundEpisodes
+      .forEach(episode -> System.out.printf(
+        "%s: %dx%d - %s\n",
+        episode.getSeries().getTitle(),
+        episode.getSeason(),
+        episode.getEpisodeNumber(),
+        episode.getTitle()
+      ));
   }
 }

@@ -1,6 +1,7 @@
 package br.com.alura.screenmatch.repository;
 
 import br.com.alura.screenmatch.model.Category;
+import br.com.alura.screenmatch.model.Episode;
 import br.com.alura.screenmatch.model.Series;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,9 @@ public interface SeriesRepository extends JpaRepository<Series, Long> {
 
   List<Series> findByTotalSeasonsLessThanEqualAndScoreGreaterThanEqual(int totalSeasons, Double score);
 
-  @Query("select s from Series s where s.totalSeasons <= :totalSeasons and s.score >= :score")
+  @Query("SELECT s FROM Series s WHERE s.totalSeasons <= :totalSeasons AND s.score >= :score")
   List<Series> findByTotalSeasonsAndScore(int totalSeasons, Double score);
+
+  @Query("SELECT e FROM Series s JOIN s.episodes e WHERE e.title ILIKE %:excerpt% ORDER BY e.season ASC, e.episodeNumber ASC")
+  List<Episode> findByExcerpt(String excerpt);
 }
